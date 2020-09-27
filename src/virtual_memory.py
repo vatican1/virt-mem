@@ -55,8 +55,17 @@ def LRU_algo(M, list_of_pages):
     return quantity_of_loads
 
 
+def find_min(use_pages):
+    min = use_pages[0][1]
+    min_arr = use_pages[0]
+    for i in use_pages:
+        if i[1] < min:
+            min_arr = i
+    return min_arr
+
+
 def OPT_algo(M, list_of_pages):
-    list_of_pages_weight = [] #Массив, где хранится, количество раз, когда страница встречается в последовательности
+    list_of_pages_weight = []  # Массив, где хранится, количество раз, когда страница встречается в последовательности
     for i in list_of_pages:
         list_of_pages_weight.append([i, list_of_pages.count(i)])
 
@@ -70,9 +79,12 @@ def OPT_algo(M, list_of_pages):
         k += 1
 
     for i in range(len(list_of_pages_weight) - k):  # Запускаем цикл на все элементы после k-ого
-        if use_pages.count(list_of_pages[i + k][0]) == 0: #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! возможно [0][i+k]
-            #use_pages = use_pages[1:] + [list_of_pages[i + k]]
-
+        print(list_of_pages_weight[i + k])
+        if use_pages.count(list_of_pages_weight[i + k]) == 0:
+            min = find_min(use_pages)  # тут находим элемент, встречающийся минимальное количество раз
+            use_pages = use_pages[0:use_pages.index(min)] + use_pages[use_pages.index(min) + 1:] + [
+                list_of_pages_weight[i + k]]  # ставим вместо удалённой страницы
+            quantity_of_loads += 1
     return quantity_of_loads
 
 
