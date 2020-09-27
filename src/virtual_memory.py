@@ -13,10 +13,6 @@ def read_sequence(file_name):
     return N, M, list_of_pages
 
 
-def delete_last(arr):
-    arr[1:] = arr[0:-1]
-
-
 def FIFO_algo(M, list_of_pages):
     quantity_of_loads = 0
     use_pages = []
