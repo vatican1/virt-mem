@@ -1,6 +1,6 @@
 import unittest
 
-from virtual_memory import FIFO_algo, read_sequence
+from virtual_memory import fifo_algo, read_sequence
 
 
 class TestVirtMemory(unittest.TestCase):
