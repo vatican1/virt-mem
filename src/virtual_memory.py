@@ -1,12 +1,12 @@
 import os
 
 
-def read_sequence(file_name='data/example1.txt'):
+def read_sequence(file_name='data/list_to_open.txt'):
     file = open(file_name, 'r')
     file = file.read().split('\n')
     N = int(file[0][4:])
     M = int(file[1][4:])
-    list_of_pages_char = file[2].rstrip().split(' ')
+    list_of_pages_char = file[2].rstrip().split(',')
     list_of_pages = []
     for i in list_of_pages_char:
         list_of_pages.append(int(i))
@@ -66,10 +66,10 @@ def find_min(use_pages):
 
 def opt_algo(M, list_of_pages):
     list_of_pages_weight = []  # Массив, где хранится, количество раз, когда страница встречается в последовательности
-    # for i in enumerate(list_of_pages):
-    #     list_of_pages_weight.append([i[1], list_of_pages[i[1]:].count(i[1])])
-    for i in list_of_pages:
-        list_of_pages_weight.append([i, list_of_pages.count(i)])
+    for i in enumerate(list_of_pages):
+        list_of_pages_weight.append([i[1], list_of_pages[i[0]:].count(i[1])])
+    # for i in list_of_pages:
+    #     list_of_pages_weight.append([i, list_of_pages.count(i)])
 
 
     quantity_of_loads = 0
@@ -77,7 +77,7 @@ def opt_algo(M, list_of_pages):
     k = 1  # k - показывает количество элементов взятых из списка страниц и загруженных в память,
     # k может быть больше M из-за повторяющихся страниц
     while len(use_pages) != M:
-        if use_pages.count(list_of_pages_weight[k]) == 0:
+        if use_pages[0].count(list_of_pages_weight[k][0]) == 0:
             use_pages.append(list_of_pages_weight[k])
         k += 1
 

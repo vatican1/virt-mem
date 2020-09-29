@@ -1,9 +1,11 @@
-from random import randint
+import random
+from  random import randint
 
 
-def generate_file(N, M, file_name='data/list_to_open.txt'):
+def generate_file(N=50, M=30, file_name='data/list_to_open.txt'):
+    random.seed(239)
     file = open(file_name, 'w')
-    n = N * randint(1, 20) // 10
+    n = N * randint(1, 20)
     file.write("N = " + str(N) + "\n")
     file.write("M = " + str(M) + "\n")
     for i in range(n):
@@ -12,6 +14,6 @@ def generate_file(N, M, file_name='data/list_to_open.txt'):
 
 if __name__ == '__main__':
     print("Введите N и M")
-    N = int(input())
-    M = int(input())
-    generate_file(N, M)
+    #N = int(input())
+    #M = int(input())
+    generate_file()
