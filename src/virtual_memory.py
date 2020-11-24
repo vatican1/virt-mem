@@ -94,7 +94,9 @@ def opt_algo(m, pages_numbers):
 
 
 if __name__ == '__main__':
-    n, m, list_of_pages = read_sequence()
+    print("Ввидите путь к файлу")
+    file_name = input()
+    n, m, list_of_pages = read_sequence(file_name)
     print("FIFO " + str(fifo_algo(m, list_of_pages)))
     print("LRU " + str(lru_algo(m, list_of_pages)))
     print("OPT " + str(opt_algo(m, list_of_pages)))
