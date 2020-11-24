@@ -1,56 +1,54 @@
-import os
-
-
-def read_sequence(file_name='data/list_to_open.txt'):
+def read_sequence(file_name='data/sequence_example.txt'):
     file = open(file_name, 'r')
-    file = file.read().split('\n')
-    N = int(file[0][4:])
-    M = int(file[1][4:])
-    list_of_pages_char = file[2].rstrip().split(',')
-    list_of_pages = []
+    file_text = file.read().split('\n')
+    n = int(file_text[0][4:])
+    m = int(file_text[1][4:])
+    list_of_pages_char = file_text[2].rstrip().split(',')
+    pages_numbers = []
     for i in list_of_pages_char:
-        list_of_pages.append(int(i))
-    return N, M, list_of_pages
+        pages_numbers.append(int(i))
+    file.close()
+    return n, m, pages_numbers
 
 
-def fifo_algo(M, list_of_pages):
+def fifo_algo(m, pages_numbers):
     quantity_of_loads = 0
-    use_pages = [list_of_pages[0]]
+    use_pages = [pages_numbers[0]]
     k = 1  # k - показывает количество элементов взятых из списка страниц и загруженных в память,
     # k может быть больше M из-за повторяющихся страниц
-    while len(use_pages) != M:
-        if use_pages.count(list_of_pages[k]) == 0:
-            use_pages.append(list_of_pages[k])
+    while len(use_pages) != m:
+        if use_pages.count(pages_numbers[k]) == 0:
+            use_pages.append(pages_numbers[k])
         k += 1
 
-    for i in range(len(list_of_pages) - k):  # Запускаем цикл на все элементы после k-ого
-        if use_pages.count(list_of_pages[i + k]) == 0:
-            use_pages = use_pages[1:] + [list_of_pages[i + k]]
+    for i in range(len(pages_numbers) - k):  # Запускаем цикл на все элементы после k-ого
+        if use_pages.count(pages_numbers[i + k]) == 0:
+            use_pages = use_pages[1:] + [pages_numbers[i + k]]
             # если страницы нет в памяти - выгружаем последнюю и добавляем новую в начало
             quantity_of_loads += 1
     return quantity_of_loads
 
 
-def lru_algo(M, list_of_pages):
+def lru_algo(m, pages_numbers):
     quantity_of_loads = 0
-    use_pages = [list_of_pages[0]]
+    use_pages = [pages_numbers[0]]
     k = 1  # k - показывает количество элементов взятых из списка страниц и загруженных в память,
     # k может быть больше M из-за повторяющихся страниц
-    while len(use_pages) != M:
-        if use_pages.count(list_of_pages[k]) == 0:
-            use_pages.append(list_of_pages[k])
+    while len(use_pages) != m:
+        if use_pages.count(pages_numbers[k]) == 0:
+            use_pages.append(pages_numbers[k])
         else:
-            el = list_of_pages[k]
+            el = pages_numbers[k]
             use_pages = use_pages[0:use_pages.index(el)] + use_pages[use_pages.index(el) + 1:] + [el]
         k += 1
 
-    for i in range(len(list_of_pages) - k):  # Запускаем цикл на все элементы после k-ого
-        if use_pages.count(list_of_pages[i + k]) == 0:
-            use_pages = use_pages[1:] + [list_of_pages[i + k]]
+    for i in range(len(pages_numbers) - k):  # Запускаем цикл на все элементы после k-ого
+        if use_pages.count(pages_numbers[i + k]) == 0:
+            use_pages = use_pages[1:] + [pages_numbers[i + k]]
             # если страницы нет в памяти - выгружаем последнюю и добавляем новую в начало
             quantity_of_loads += 1
         else:
-            el = list_of_pages[i + k]
+            el = pages_numbers[i + k]
             use_pages = use_pages[0:use_pages.index(el)] + use_pages[use_pages.index(el) + 1:] + [el]
     return quantity_of_loads
 
@@ -65,12 +63,12 @@ def find_min(use_pages):  # [a,b,c,d,e][1,1,1,1,1]
     return min_index_of_el
 
 
-def opt_algo(M, list_of_pages):
+def opt_algo(m, pages_numbers):
     list_of_pages_weight = [[], []]
     # Массив, где хранится, количество раз, когда страница встречается в последовательности
-    for i in enumerate(list_of_pages):
+    for i in enumerate(pages_numbers):
         list_of_pages_weight[0].append(i[1])
-        list_of_pages_weight[1].append(list_of_pages[i[0]:].count(i[1]))
+        list_of_pages_weight[1].append(pages_numbers[i[0]:].count(i[1]))
     # for i in list_of_pages:
     #     list_of_pages_weight.append([i, list_of_pages.count(i)])
 
@@ -78,7 +76,7 @@ def opt_algo(M, list_of_pages):
     use_pages = [[list_of_pages_weight[0][0]], [list_of_pages_weight[1][0]]]
     k = 1  # k - показывает количество элементов взятых из списка страниц и загруженных в память,
     # k может быть больше M из-за повторяющихся страниц
-    while len(use_pages[0]) != M:
+    while len(use_pages[0]) != m:
         if use_pages[0].count(list_of_pages_weight[0][k]) == 0:
             use_pages[0].append(list_of_pages_weight[0][k])
             use_pages[1].append(list_of_pages_weight[1][k])
@@ -96,11 +94,11 @@ def opt_algo(M, list_of_pages):
 
 
 if __name__ == '__main__':
-    N, M, list_of_pages = read_sequence()
-    print("FIFO " + str(fifo_algo(M, list_of_pages)))
-    print("LRU " + str(lru_algo(M, list_of_pages)))
-    print("OPT " + str(opt_algo(M, list_of_pages)))
-    # print("ВВедите имя файла с последовательностью страниц")
+    n, m, list_of_pages = read_sequence()
+    print("FIFO " + str(fifo_algo(m, list_of_pages)))
+    print("LRU " + str(lru_algo(m, list_of_pages)))
+    print("OPT " + str(opt_algo(m, list_of_pages)))
+    # print("Введите имя файла с последовательностью страниц")
     # file_name = input()
     # while not os.path.exists(file_name):
     #     print('Файла не существует')

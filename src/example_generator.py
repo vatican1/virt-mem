@@ -3,7 +3,7 @@ from  random import randint
 
 
 def generate_file(N=50, M=30, file_name='data/list_to_open.txt'):
-    random.seed(239)
+    random.seed(2390)
     file = open(file_name, 'w')
     n = N * randint(1, 20)
     file.write("N = " + str(N) + "\n")
